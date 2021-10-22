@@ -3,11 +3,12 @@
       <span class="text">Welcome!</span>
   </div>
   <magic-card>
-    <a target="_blank" href="https://app.daily.dev/louis_lu"
+    <a 
+      style="width: 400px;height:560px" target="_blank" href="https://app.daily.dev/louis_lu"
     ><img
       src="https://api.daily.dev/devcards/7c8923e98d044c82af8a8b9fcf8e7a01.png?r=dxp"
-      width="400"
       alt="louislu lu's Dev Card"
+      style="width: 100%;height:100%"
   /></a>
   </magic-card>
 </template>
