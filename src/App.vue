@@ -1,16 +1,23 @@
 <template>
   <div class="container">
-      <span class="text">Welcome!</span>
+
+    <div class="profile">
+
+      <div class="info">
+        <img width="100" height="100" src="./assets/portrait.png" />
+        <div>
+          <p>Louis Lu</p>
+          <p>陆 祎洲</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="route">
+      <magic-card />
+    </div>
+
   </div>
-  <magic-card>
-    <a 
-      style="width: 400px;height:560px" target="_blank" href="https://app.daily.dev/louis_lu"
-    ><img
-      src="https://api.daily.dev/devcards/7c8923e98d044c82af8a8b9fcf8e7a01.png?r=dxp"
-      alt="louislu lu's Dev Card"
-      style="width: 100%;height:100%"
-  /></a>
-  </magic-card>
 </template>
 
 <script setup>
@@ -20,20 +27,56 @@ import MagicCard from './components/MagicCard.vue'
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin: 6rem auto;
-  /* display: flex; */
+  color: #484a4d;
+  display: flex;
+  margin: 0rem auto;
   justify-content: center;
+  max-width: 1800px;
+  min-height: 100vh;
+  background-color: aliceblue;
 }
 div.container {
   display: flex;
-  flex-direction: column;
+  margin: 2rem 0;
+  border-radius: 1rem;
+  overflow: hidden;
 }
-span.text {
-  font-size: 6rem;
+div.profile {
+  width: 240px;
+  font-size: 1.25rem;
+  background-color: #fefefe;
+  padding: 1rem 4rem 1rem 1rem;
+  box-shadow: 8px 0px 20px -18px #30303080;
+  z-index: 1;
+}
+div.route {
+  flex-grow: 1;
+}
+.info {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  font-weight: 600;
+}
+.info img {
+  border-radius: 50%;
+  border: 5px solid #f0f0f0;
+  object-fit: cover;
+  transition: all 250ms ease-in-out;
+}
+.info img:hover {
+  box-shadow: 0px 0px 24px 0px #30303020, 1px 1px 6px -2px #00307070;
+}
+.info p {
+  text-align: start;
+}
+.route {
+  background-color: #fefefe;
+  padding: 1rem;
+  min-width: 60vw;
 }
 </style>
