@@ -1,0 +1,205 @@
+{
+  "id": "2888943",
+  "name": "profile",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15838588",
+      "name": "clock-filling",
+      "font_class": "clock",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "15838593",
+      "name": "favorite-filling",
+      "font_class": "favorite",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "15838599",
+      "name": "news-filling",
+      "font_class": "email",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "15838604",
+      "name": "picture-filling",
+      "font_class": "picture",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "15838606",
+      "name": "user-filling",
+      "font_class": "user",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "24941056",
+      "name": "标签栏_伙伴",
+      "font_class": "heart",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "24941065",
+      "name": "部门",
+      "font_class": "relationship",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "24941068",
+      "name": "标签栏_生活",
+      "font_class": "life",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "24941070",
+      "name": "定位",
+      "font_class": "location",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "24941073",
+      "name": "更多3",
+      "font_class": "more",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "24941078",
+      "name": "工作",
+      "font_class": "work",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "24941080",
+      "name": "加",
+      "font_class": "plus",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "24941081",
+      "name": "减",
+      "font_class": "minus",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "24941087",
+      "name": "盒子",
+      "font_class": "box",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "24941093",
+      "name": "领带",
+      "font_class": "tie",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "24941097",
+      "name": "清空",
+      "font_class": "delete",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "24941099",
+      "name": "日程",
+      "font_class": "calendar",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "24941102",
+      "name": "提醒",
+      "font_class": "notice",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "24941106",
+      "name": "手势_点击",
+      "font_class": "click",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "24941110",
+      "name": "完成",
+      "font_class": "complete",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "24941111",
+      "name": "向下",
+      "font_class": "down",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "24941114",
+      "name": "向右",
+      "font_class": "right",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "24941119",
+      "name": "向左",
+      "font_class": "left",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "24941120",
+      "name": "信息",
+      "font_class": "info",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "24941124",
+      "name": "勋章",
+      "font_class": "glory",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "24941129",
+      "name": "标签栏_我的",
+      "font_class": "mine",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "24941131",
+      "name": "用户",
+      "font_class": "profile",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "24941133",
+      "name": "应用",
+      "font_class": "application",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    }
+  ]
+}
