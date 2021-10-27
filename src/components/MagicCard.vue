@@ -1,6 +1,5 @@
 <template>
   <div class="magic-card-container">
-    <p>dev card</p>
     <div :style="{
         transform: transform3D,
       }" class="magic-card" @mouseenter="handleMouseEnter" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
