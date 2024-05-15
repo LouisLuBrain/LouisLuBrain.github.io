@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { getCurrentMonthCalendar } from "./utils";
 import moment from "moment";
 import classNames from "classnames";
+import { IconMinus, IconPlus } from "@tabler/icons-react";
 
 const DAYS = ["SUN", "MON", "TUE", "WED", "THR", "FRI", "SAT"];
 
@@ -14,41 +15,55 @@ export function Calendar() {
   }, [year, month]);
 
   return (
-    <div>
-      <div className="flex items-center gap-x-4">
-        <div>
-          <button onClick={() => setYear((prev) => ++prev)}>+</button>
+    <div className="flex flex-col items-center w-fit rounded-md overflow-hidden shadow-lg">
+      <div className="flex items- justify-between gap-x-4 p-2 px-6 bg-slate-600 w-full text-white">
+        <div className="flex items-center gap-x-2">
+          <button
+            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
+            onClick={() => setYear((prev) => ++prev)}
+          >
+            <IconPlus size={18} />
+          </button>
           <span>{year}</span>
-          <button onClick={() => setYear((prev) => --prev)}>-</button>
+          <button
+            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
+            onClick={() => setYear((prev) => --prev)}
+          >
+            <IconMinus size={18} />
+          </button>
         </div>
-        <div>
+        <div className="flex items-center gap-x-2">
           <button
             onClick={() => {
               if (month === 11) setYear((prev) => ++prev);
               setMonth((prev) => ++prev % 12);
             }}
+            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
           >
-            +
+            <IconPlus size={18} />
           </button>
-          <span>{moment({ month }).format("MMMM")}</span>
+          <span className="inline-block w-16 text-center">
+            {moment({ month }).format("MMM")}
+          </span>
           <button
             onClick={() => {
               if (month === 0) setYear((prev) => --prev);
               setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
             }}
+            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
           >
-            -
+            <IconMinus size={18} />
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 gap-2 select-none">
+      <div className="grid grid-cols-7 gap-2 select-none bg-slate-100 p-2">
         <div className="grid grid-cols-7 gap-2 col-span-7">
           {DAYS.map((val) => (
             <div
-              className="cols-span-1 flex justify-center items-center w-full text-gray-700 first:text-red-600  last:text-red-600"
+              className="cols-span-1 w-16 flex justify-center items-center text-gray-700 first:text-red-600  last:text-red-600"
               key={val}
             >
-              <div className="text-center leading-8 w-8 h-8 rounded-md bg-white text-base font-semibold">
+              <div className="text-center leading-8 w-8 h-8 rounded-md bg-slate-100 text-base font-semibold">
                 {val}
               </div>
             </div>
@@ -56,12 +71,12 @@ export function Calendar() {
         </div>
         {days.map((val) => (
           <div
-            className="cols-span-1 flex justify-center items-center w-full"
+            className="cols-span-1 w-16 flex justify-center items-center"
             key={val.moment.format("lll")}
           >
             <div
               className={classNames(
-                "text-center leading-8 w-8 h-8 rounded-md bg-white cursor-pointer font-medium text-lg ",
+                "text-center leading-8 w-8 h-8 rounded-md bg-slate-100 cursor-pointer font-medium text-lg ",
                 (val.day === 0 || val.day === 6) &&
                   "text-red-600 hover:bg-red-200",
                 val.day > 0 && val.day < 6 && "text-gray-700 hover:bg-gray-200",
