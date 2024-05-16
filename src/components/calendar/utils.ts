@@ -25,13 +25,18 @@ export function getCurrentMonthCalendar<T>(
   const currentMonth = getCurrentMonthDays<T>(year, month, true);
   const preMonthDays = currentMonth.at(0)?.day ?? 0;
   const nextMonthDays = 6 - (currentMonth.at(-1)?.day ?? 0);
-  const preMonth = getCurrentMonthDays<T>(
-    month - 1 < 0 ? year - 1 : year,
-    month - 1 < 0 ? 11 : (month - 1) % 12
-  ).slice(-preMonthDays);
+
+  const preMonth =
+    preMonthDays === 0
+      ? []
+      : getCurrentMonthDays<T>(
+          month - 1 < 0 ? year - 1 : year,
+          month - 1 < 0 ? 11 : (month - 1) % 12
+        ).slice(-preMonthDays);
+
   const nextMonth = getCurrentMonthDays<T>(year, (month + 1) % 12).slice(
     0,
-    nextMonthDays
+    nextMonthDays || 7
   );
 
   return [...preMonth, ...currentMonth, ...nextMonth];
