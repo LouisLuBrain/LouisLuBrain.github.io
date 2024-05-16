@@ -2,7 +2,12 @@ import { useMemo, useState } from "react";
 import { getCurrentMonthCalendar } from "./utils";
 import moment from "moment";
 import classNames from "classnames";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconMinus,
+  IconPlus,
+} from "@tabler/icons-react";
 
 const DAYS = ["SUN", "MON", "TUE", "WED", "THR", "FRI", "SAT"];
 
@@ -35,24 +40,24 @@ export function Calendar() {
         <div className="flex items-center gap-x-2">
           <button
             onClick={() => {
-              if (month === 11) setYear((prev) => ++prev);
-              setMonth((prev) => ++prev % 12);
+              if (month === 0) setYear((prev) => --prev);
+              setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
             }}
-            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
+            className="w-6 h-6 rounded-full bg-slate-600 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-slate-600 items-center p-[3px]"
           >
-            <IconPlus size={18} />
+            <IconChevronLeft size={18} />
           </button>
           <span className="inline-block w-16 text-center">
             {moment({ month }).format("MMM")}
           </span>
           <button
             onClick={() => {
-              if (month === 0) setYear((prev) => --prev);
-              setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
+              if (month === 11) setYear((prev) => ++prev);
+              setMonth((prev) => ++prev % 12);
             }}
-            className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 items-center p-[3px]"
+            className="w-6 h-6 rounded-full bg-slate-600 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-slate-600 items-center p-[3px]"
           >
-            <IconMinus size={18} />
+            <IconChevronRight size={18} />
           </button>
         </div>
       </div>
