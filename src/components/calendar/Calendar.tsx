@@ -21,7 +21,7 @@ export function Calendar() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-fit rounded-md overflow-hidden bg-slate-50">
+    <div className="flex flex-col items-center w-fit rounded-md overflow-hidden bg-slate-50 border-stone-200 border-2">
       <div className="flex items-center text-sm justify-between gap-x-4 p-2 px-4 bg-stone-700 w-full text-white">
         {/* <div className="flex items-center gap-x-2">
           <button

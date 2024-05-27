@@ -7,7 +7,7 @@ function App() {
         <div className="flex">
           <Calendar />
         </div>
-        <div className="flex col-span-2 row-span-2">
+        <div className="flex col-span-3 row-span-2">
           <Weekly />
         </div>
         <div className="flex"></div>
