@@ -1,4 +1,5 @@
 import { Calendar, Weekly } from "./components";
+import { Playground } from "./pages/Playground";
 
 function App() {
   return (
@@ -10,7 +11,9 @@ function App() {
         <div className="flex col-span-3 row-span-2">
           <Weekly />
         </div>
-        <div className="flex"></div>
+        <div className="flex">
+          <Playground />
+        </div>
         <div className="flex"></div>
         <div className="flex"></div>
         <div className="flex"></div>
