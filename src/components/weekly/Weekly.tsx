@@ -34,6 +34,21 @@ const WEEK: { day: string; events: DailyEvent[] }[] = [
         description: "Don't forget the milk.",
         startTime: moment({ hour: 19, minute: 30 }),
       },
+      {
+        title: "Buy food",
+        description: "Don't forget the milk.",
+        startTime: moment({ hour: 19, minute: 30 }),
+      },
+      {
+        title: "Buy food",
+        description: "Don't forget the milk.",
+        startTime: moment({ hour: 19, minute: 30 }),
+      },
+      {
+        title: "Buy food",
+        description: "Don't forget the milk.",
+        startTime: moment({ hour: 19, minute: 30 }),
+      },
     ],
   },
   { day: "wed", events: [] },
@@ -51,31 +66,25 @@ const WEEK: { day: string; events: DailyEvent[] }[] = [
   },
 ];
 
+const randomColor = [
+  "bg-blue-100 hover:bg-blue-600",
+  "bg-green-100 hover:bg-green-600",
+  "bg-red-100 hover:bg-red-600",
+  "bg-amber-100 hover:bg-amber-600",
+  "bg-purple-100 hover:bg-purple-600",
+];
+
 export function Weekly() {
   const [currentDay, setCurrentDay] = useState<number>(moment().day());
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentDay(moment().day()), 6000);
-    return () => clearInterval(timer);
+    const timer1 = setInterval(() => setCurrentDay(moment().day()), 6000);
+    return () => clearInterval(timer1);
   }, []);
+
   return (
-    <div className="flex w-full rounded-md overflow-hidden bg-slate-100 border-stone-200 border-2 shadow-sm p-2 gap-x-3">
-      {/* <div className="grid grid-rows-12 pt-16 gap-2">
-        <div>00:00</div>
-        <div>02:00</div>
-        <div>04:00</div>
-        <div>06:00</div>
-        <div>08:00</div>
-        <div>10:00</div>
-        <div>12:00</div>
-        <div>14:00</div>
-        <div>16:00</div>
-        <div>18:00</div>
-        <div>20:00</div>
-        <div>22:00</div>
-        <div>24:00</div>
-      </div> */}
-      <div className="grid grid-cols-7 gap-x-4 ">
+    <div className="flex w-full rounded-md overflow-hidden bg-slate-100 border-stone-200 border-2 shadow-sm p-2 gap-x-3 relative">
+      <div className="grid grid-cols-7 gap-x-4 w-full">
         {WEEK.map((d, index) => (
           <div>
             <div
@@ -93,9 +102,14 @@ export function Weekly() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-y-2">
-              {d.events.map((event) => (
-                <div>
+            <div className="flex flex-col gap-y-2 py-2">
+              {d.events.map((event, index) => (
+                <div
+                  className={classNames(
+                    "p-2 hover:text-white rounded-md cursor-pointer duration-200",
+                    randomColor[index % 5]
+                  )}
+                >
                   <div>{event.title}</div>
                   <div>{event.description}</div>
                   <div>at {event.startTime.format("HH:mm")}</div>
