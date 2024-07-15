@@ -1,13 +1,16 @@
 import {
   DndContext,
   DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
   useDraggable,
   useDroppable,
 } from "@dnd-kit/core";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import classNames from "classnames";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 
 export type DragItem = {
   id: string;
@@ -23,23 +26,28 @@ export function Playground() {
     { id: "4", label: "button 4" },
   ]);
   const [droplist2, setDroplist2] = useState<DragItem[]>([]);
+  const [activeItem, setActiveItem] = useState<DragItem>();
 
-  const onDragStart = (e) => {
-    console.log("onDragStart: ", e);
+  const onDragStart = (e: DragStartEvent) => {
+    setActiveItem(e.active.data.current as DragItem);
   };
+
   const onDragOver = (e) => {
     console.log("onDragOver: ", e);
   };
+
   const onDragEnd = (e: DragEndEvent) => {
     console.log("onDragEnd: ", e);
     const currentItem = e.active.data.current as DragItem;
     if (e.over?.id === "a") {
       setDroplist2((prev) => prev.filter((item) => item.id !== currentItem.id));
-      setDroplist1((prev) => [...prev, currentItem]);
+      droplist1.find((item) => item.id === currentItem.id) ||
+        setDroplist1((prev) => [...prev, currentItem]);
     }
     if (e.over?.id === "b") {
       setDroplist1((prev) => prev.filter((item) => item.id !== currentItem.id));
-      setDroplist2((prev) => [...prev, currentItem]);
+      droplist2.find((item) => item.id === currentItem.id) ||
+        setDroplist2((prev) => [...prev, currentItem]);
     }
   };
   return (
@@ -50,19 +58,26 @@ export function Playground() {
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
       >
+        <DragOverlay>
+          {activeItem ? <div>{activeItem.label}</div> : null}
+        </DragOverlay>
         <Droppable id="a" classname="bg-red-600">
-          {droplist1.map((item) => (
-            <Draggable data={item} id={item.id} key={item.id}>
-              {item.label}
-            </Draggable>
-          ))}
+          <SortableContext items={droplist1}>
+            {droplist1.map((item) => (
+              <Draggable data={item} id={item.id} key={item.id}>
+                {item.label}
+              </Draggable>
+            ))}
+          </SortableContext>
         </Droppable>
         <Droppable id="b" classname="bg-green-600">
-          {droplist2.map((item) => (
-            <Draggable data={item} id={item.id} key={item.id}>
-              {item.label}
-            </Draggable>
-          ))}
+          <SortableContext items={droplist2}>
+            {droplist2.map((item) => (
+              <Draggable data={item} id={item.id} key={item.id}>
+                {item.label}
+              </Draggable>
+            ))}
+          </SortableContext>
         </Droppable>
       </DndContext>
     </div>
@@ -93,9 +108,13 @@ function Draggable(props: {
   id: string;
   data: DragItem;
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: "draggable-" + props.id,
     data: props.data,
+    transition: {
+      duration: 150, // milliseconds
+      easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+    },
   });
 
   return (
