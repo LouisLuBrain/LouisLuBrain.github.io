@@ -1,84 +1,137 @@
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
   useDraggable,
   useDroppable,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import classNames from "classnames";
 
 import { ReactNode, useMemo, useState } from "react";
 
 export type DragItem = {
-  id: string;
+  id: string | number;
   label?: string;
   classname?: string;
+  parentId: string | number;
 };
 
 export function Playground() {
-  const [droplist1, setDroplist1] = useState<DragItem[]>([
-    { id: "1", label: "button 1" },
-    { id: "2", label: "button 2" },
-    { id: "3", label: "button 3" },
-    { id: "4", label: "button 4" },
+  const [droplist, setDroplist] = useState<DragItem[]>([
+    { id: "1", label: "button 1", parentId: "A" },
+    { id: "2", label: "button 2", parentId: "A" },
+    { id: "3", label: "button 3", parentId: "A" },
+    { id: "4", label: "button 4", parentId: "A" },
   ]);
-  const [droplist2, setDroplist2] = useState<DragItem[]>([]);
   const [activeItem, setActiveItem] = useState<DragItem>();
 
+  const droplistA = useMemo(
+    () => droplist.filter(({ parentId }) => parentId === "A"),
+    [droplist]
+  );
+  const droplistB = useMemo(
+    () => droplist.filter(({ parentId }) => parentId === "B"),
+    [droplist]
+  );
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const onDragStart = (e: DragStartEvent) => {
-    setActiveItem(e.active.data.current as DragItem);
+    const { active } = e;
+    setActiveItem(active.data.current as DragItem);
+    console.log("=> ~ onDragStart ~ active:", active);
   };
 
-  const onDragOver = (e) => {
-    console.log("onDragOver: ", e);
+  const onDragOver = (e: DragOverEvent) => {
+    const { active, over } = e;
+    console.log("=> ~ onDragOver ~ over:", over);
+    console.log("=> ~ onDragOver ~ active:", active);
+
+    if (over?.id === "A" || over?.id === "B") {
+      setDroplist((prev) =>
+        prev.map((item) =>
+          `${item.parentId}${item.id}` === active.id
+            ? { ...item, parentId: over?.id }
+            : item
+        )
+      );
+    }
   };
 
   const onDragEnd = (e: DragEndEvent) => {
-    console.log("onDragEnd: ", e);
-    const currentItem = e.active.data.current as DragItem;
-    if (e.over?.id === "a") {
-      setDroplist2((prev) => prev.filter((item) => item.id !== currentItem.id));
-      droplist1.find((item) => item.id === currentItem.id) ||
-        setDroplist1((prev) => [...prev, currentItem]);
-    }
-    if (e.over?.id === "b") {
-      setDroplist1((prev) => prev.filter((item) => item.id !== currentItem.id));
-      droplist2.find((item) => item.id === currentItem.id) ||
-        setDroplist2((prev) => [...prev, currentItem]);
-    }
+    const { active, over } = e;
+
+    setDroplist((prev) => {
+      const oldIndex = prev.findIndex(
+        ({ id, parentId }) => `${parentId}${id}` === active.id
+      );
+      const newIndex = prev.findIndex(
+        ({ id, parentId }) => `${parentId}${id}` === over?.id
+      );
+
+      return arrayMove(prev, oldIndex, newIndex);
+    });
   };
   return (
     <div>
       <DndContext
+        sensors={sensors}
         onDragStart={onDragStart}
         // onDragMove={onDragMove}
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
       >
         <DragOverlay>
-          {activeItem ? <div>{activeItem.label}</div> : null}
+          {activeItem ? (
+            <div className="p-1 bg-slate-500 bg-opacity-35 inline-block h-fit">
+              {activeItem.label}
+            </div>
+          ) : null}
         </DragOverlay>
-        <Droppable id="a" classname="bg-red-600">
-          <SortableContext items={droplist1}>
-            {droplist1.map((item) => (
-              <Draggable data={item} id={item.id} key={item.id}>
+        <SortableContext items={droplistA}>
+          <Droppable id="A" classname="bg-red-600 p-4">
+            {droplistA.map((item) => (
+              <Draggable
+                data={item}
+                id={`${item.parentId}${item.id}`}
+                key={item.id}
+              >
                 {item.label}
               </Draggable>
             ))}
-          </SortableContext>
-        </Droppable>
-        <Droppable id="b" classname="bg-green-600">
-          <SortableContext items={droplist2}>
-            {droplist2.map((item) => (
-              <Draggable data={item} id={item.id} key={item.id}>
+          </Droppable>
+        </SortableContext>
+        <SortableContext items={droplistB}>
+          <Droppable id="B" classname="bg-green-600 p-4">
+            {droplistB.map((item) => (
+              <Draggable
+                data={item}
+                id={`${item.parentId}${item.id}`}
+                key={item.id}
+              >
                 {item.label}
               </Draggable>
             ))}
-          </SortableContext>
-        </Droppable>
+          </Droppable>
+        </SortableContext>
       </DndContext>
     </div>
   );
@@ -98,7 +151,7 @@ function Droppable(props: {
       ref={setNodeRef}
       className={classNames(props.classname, isOver && "bg-gray-500")}
     >
-      <div className="h-72 w-full">{props.children}</div>
+      <div className="min-h-12 w-full flex gap-4">{props.children}</div>
     </div>
   );
 }
@@ -108,25 +161,31 @@ function Draggable(props: {
   id: string;
   data: DragItem;
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: "draggable-" + props.id,
-    data: props.data,
-    transition: {
-      duration: 150, // milliseconds
-      easing: "cubic-bezier(0.25, 1, 0.5, 1)",
-    },
-  });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: props.id,
+      data: props.data,
+      transition: {
+        duration: 150, // milliseconds
+        easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+      },
+    });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   return (
     <button
+      className="p-1 bg-slate-500 bg-opacity-35 inline-block h-fit"
       ref={setNodeRef}
-      style={{
-        transform: CSS.Translate.toString(transform),
-      }}
+      style={style}
+      key={props.id}
       {...listeners}
       {...attributes}
     >
-      {props.children || "drag me"}
+      {props.children}
     </button>
   );
 }
