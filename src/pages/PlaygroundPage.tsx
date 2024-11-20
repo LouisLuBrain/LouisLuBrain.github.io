@@ -6,7 +6,6 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  useDraggable,
   useDroppable,
   useSensor,
   useSensors,
@@ -29,7 +28,7 @@ export type DragItem = {
   parentId: string | number;
 };
 
-export function Playground() {
+export function PlaygroundPage() {
   const [droplist, setDroplist] = useState<DragItem[]>([
     { id: "1", label: "button 1", parentId: "A" },
     { id: "2", label: "button 2", parentId: "A" },
