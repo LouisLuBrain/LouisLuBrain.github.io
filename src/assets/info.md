@@ -1,3 +1,17 @@
+# 个人信息
+
+- 姓名，年龄，学校学历专业，联系方式，个人主页
+
+# 技术
+
+- react，solidjs，typescript
+- tailwindcss
+
+# 工作经历
+
+- Wishlife 2019-至今
+- 前端工程师，负责项目部分模块，分配任务，处理任务难题，review代码
+
 # 项目
 
 ## 1. Weimill
