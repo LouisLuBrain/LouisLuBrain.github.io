@@ -10,6 +10,7 @@ export function Calendar() {
   const [year, setYear] = useState(moment().year());
   const [month, setMonth] = useState(moment().month());
   const [currentDay, setCurrentDay] = useState<Moment>(moment());
+  const [selectedDay, setSelectedDay] = useState<Moment | null>(null);
 
   const days = useMemo(() => {
     return getCurrentMonthCalendar(year, month);
@@ -19,6 +20,12 @@ export function Calendar() {
     const timer = setInterval(() => setCurrentDay(moment()), 6000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleBackToToday = () => {
+    setSelectedDay(currentDay);
+    setMonth(currentDay.month());
+    setYear(currentDay.year());
+  };
 
   return (
     <div className="flex flex-col items-center w-fit rounded-lg overflow-hidden bg-slate-50 border-stone-200 border-2">
@@ -38,28 +45,36 @@ export function Calendar() {
             <IconMinus size={18} />
           </button>
         </div> */}
-        <div className="flex items-center gap-x-2 select-none">
+        <div className="flex items-center justify-between w-full py-2">
+          <div className="flex items-center gap-x-2 select-none text-2xl">
+            <button
+              onClick={() => {
+                if (month === 0) setYear((prev) => --prev);
+                setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
+              }}
+              className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
+            >
+              <IconChevronLeft size={24} />
+            </button>
+            <span className="inline-block w-16 text-center">
+              {moment({ month }).format("MMM")}
+            </span>
+            <span>{year}</span>
+            <button
+              onClick={() => {
+                if (month === 11) setYear((prev) => ++prev);
+                setMonth((prev) => ++prev % 12);
+              }}
+              className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
+            >
+              <IconChevronRight size={24} />
+            </button>
+          </div>
           <button
-            onClick={() => {
-              if (month === 0) setYear((prev) => --prev);
-              setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
-            }}
-            className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
+            onClick={handleBackToToday}
+            className="rounded-full px-4 py-1 bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center"
           >
-            <IconChevronLeft size={18} />
-          </button>
-          <span className="inline-block w-16 text-center">
-            {moment({ month }).format("MMM")}
-          </span>
-          <span>{year}</span>
-          <button
-            onClick={() => {
-              if (month === 11) setYear((prev) => ++prev);
-              setMonth((prev) => ++prev % 12);
-            }}
-            className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
-          >
-            <IconChevronRight size={18} />
+            Today
           </button>
         </div>
       </div>
@@ -78,7 +93,12 @@ export function Calendar() {
           ))}
         </div>
         {days.map((val) => (
-          <CalendarCell value={val} currentDay={currentDay} />
+          <CalendarCell
+            value={val}
+            currentDay={currentDay}
+            selected={selectedDay?.isSame(val.moment, "day")}
+            onClick={(value) => setSelectedDay(value.moment)}
+          />
         ))}
       </div>
     </div>
