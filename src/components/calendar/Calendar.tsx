@@ -4,7 +4,17 @@ import moment, { Moment } from "moment";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { CalendarCell } from "./CalendarCell";
 
-const DAYS = ["SUN", "MON", "TUE", "WED", "THR", "FRI", "SAT"];
+enum DAYS {
+  SUNDAY = "SUN",
+  MONDAY = "MON",
+  TUESDAY = "TUE",
+  WEDNESDAY = "WED",
+  THURSDAY = "THR",
+  FRIDAY = "FRI",
+  SATURDAY = "SAT",
+}
+
+export type SelectWeekDay = DAYS | null;
 
 export function Calendar() {
   const [year, setYear] = useState(moment().year());
@@ -81,7 +91,7 @@ export function Calendar() {
 
       <div className="grid grid-cols-7 select-none bg-slate-100 p-2">
         <div className="grid grid-cols-7 col-span-7">
-          {DAYS.map((val) => (
+          {Object.values(DAYS).map((val) => (
             <div
               className="cols-span-1 p-2 flex justify-start items-center text-gray-700 first:text-rose-600  last:text-rose-600"
               key={val}
@@ -95,7 +105,7 @@ export function Calendar() {
         {days.map((val) => (
           <CalendarCell
             value={val}
-            currentDay={currentDay}
+            currentDay={currentDay.set({ date: 17 })}
             selected={selectedDay?.isSame(val.moment, "day")}
             onClick={(value) => setSelectedDay(value.moment)}
           />
