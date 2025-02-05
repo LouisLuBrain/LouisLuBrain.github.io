@@ -3,6 +3,7 @@ import { getCurrentMonthCalendar } from "./utils";
 import moment, { Moment } from "moment";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { CalendarCell } from "./CalendarCell";
+import { CalendarDay } from "./type";
 
 enum DAYS {
   SUNDAY = "SUN",
@@ -16,14 +17,19 @@ enum DAYS {
 
 export type SelectWeekDay = DAYS | null;
 
-export function Calendar() {
+interface Props<T> {
+  data?: CalendarDay<T>[];
+  onSelect?: (date: Moment) => void;
+}
+
+export function Calendar<T>(props: Props<T>) {
   const [year, setYear] = useState(moment().year());
   const [month, setMonth] = useState(moment().month());
   const [currentDay, setCurrentDay] = useState<Moment>(moment());
   const [selectedDay, setSelectedDay] = useState<Moment | null>(null);
 
   const days = useMemo(() => {
-    return getCurrentMonthCalendar(year, month);
+    return getCurrentMonthCalendar<T>(year, month);
   }, [year, month]);
 
   useEffect(() => {
@@ -37,8 +43,13 @@ export function Calendar() {
     setYear(currentDay.year());
   };
 
+  const handleSelect = (value: CalendarDay<T>) => {
+    props.onSelect && props.onSelect(value.moment);
+    setSelectedDay(value.moment);
+  };
+
   return (
-    <div className="flex flex-col items-center w-fit rounded-lg overflow-hidden bg-slate-50 border-stone-200 border-2">
+    <div className="flex flex-col items-center rounded-lg overflow-hidden bg-slate-50 border-stone-200 border-2">
       <div className="flex items-center text-sm justify-between gap-x-4 p-2 px-4 bg-stone-700 w-full text-white">
         {/* <div className="flex items-center gap-x-2">
           <button
@@ -103,11 +114,11 @@ export function Calendar() {
           ))}
         </div>
         {days.map((val) => (
-          <CalendarCell
+          <CalendarCell<T>
             value={val}
             currentDay={currentDay.set({ date: 17 })}
             selected={selectedDay?.isSame(val.moment, "day")}
-            onClick={(value) => setSelectedDay(value.moment)}
+            onClick={handleSelect}
           />
         ))}
       </div>
