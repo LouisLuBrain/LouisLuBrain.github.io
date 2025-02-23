@@ -1,0 +1,30 @@
+# 博客配置 | Blog Configuration
+# keywords:
+title: 个人简历
+subtitle: ""
+description: ""
+keywords:
+language: en
+timezone: ""
+author: Louis Lu
+# description:
+
+# 如需修改icon,请替换 source/images/favicon.ico 文件
+# If you want to change the icon, please replace the source/images/favicon.ico file
+avatar: /images/favicon.ico
+copyright: 2024
+
+# 个人信息 | Personal Information
+name: Louis Lu
+
+# 社交账号 | Social Account
+github: https://github.com/LouisLuBrain
+github_link: https://github.com/LouisLuBrain
+phone: 15629075931
+mail_link: 1394853556@qq.com
+mail: 1394853556@qq.com
+# linkedin: https://linkedin.com/in/xxx
+# QQ: http://sighttp.qq.com/authd?IDKEY=xxx
+
+# TODO：适配更多的社交账号
+# TODO: Add more social accounts
