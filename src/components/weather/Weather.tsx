@@ -24,7 +24,7 @@ export function Weather() {
       setLoading(true);
       const res = await getWeatherData(lat, lon, "minutely,hourly");
       setDailyWeather(get(res, "daily", []));
-      setCurrentWeather(get(res, "current", {}));
+      setCurrentWeather(res);
     } catch (err) {
       console.error(err);
       // Add error notification
