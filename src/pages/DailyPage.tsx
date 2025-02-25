@@ -2,6 +2,7 @@ import { Moment } from "moment";
 import { Calendar, IssueList } from "../components";
 import { useMemo, useState } from "react";
 import { Item } from "../types";
+import { Weather } from "../components/weather/Weather";
 
 export function DailyPage() {
   const [selectedDay, setSelectedDay] = useState<Moment | null>(null);
@@ -25,8 +26,11 @@ export function DailyPage() {
     <div className="flex justify-center h-full">
       <div className="flex gap-2 p-4 w-full flex-wrap">
         <Calendar onSelect={handleSelect} />
-        <div className="flex-1 min-w-40 flex">
-          <IssueList loading={loading} issues={dayData} />
+        <div className="flex-1 min-w-40 flex flex-col gap-2">
+          <Weather />
+          <div className="flex-1 w-full">
+            <IssueList loading={loading} issues={dayData} />
+          </div>
         </div>
       </div>
     </div>
