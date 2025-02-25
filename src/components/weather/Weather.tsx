@@ -9,6 +9,7 @@ import {
   storeLocation,
   getLocation,
 } from "./weatherAPI";
+import { IconRefresh } from "@tabler/icons-react";
 
 export function Weather() {
   const [location, setLocation] = useState(getLocation().name);
@@ -18,30 +19,63 @@ export function Weather() {
   const [dailyWeather, setDailyWeather] = useState<DailyWeather[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchWeatherData = async (lat: number, lng: number) => {
-    console.log("=> ~ fetchWeatherData ~ lat:", lat);
-    console.log("=> ~ fetchWeatherData ~ lng:", lng);
+  const fetchWeatherData = async (lat: number, lon: number) => {
     try {
       setLoading(true);
-      const res = await getWeatherData(lat, lng, "minutely,hourly");
+      const res = await getWeatherData(lat, lon, "minutely,hourly");
       setDailyWeather(get(res, "daily", []));
       setCurrentWeather(get(res, "current", {}));
     } catch (err) {
       console.error(err);
-      // 添加错误提示
+      // Add error notification
     } finally {
       setLoading(false);
     }
   };
 
+  const getCurrentPosition = () => {
+    return new Promise<GeolocationPosition>((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error("Geolocation is not supported by your browser"));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => resolve(position),
+        (error) => reject(error),
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+    });
+  };
+
   useEffect(() => {
-    const { lat, lng } = getLocation();
-    fetchWeatherData(lat, lng);
+    const initLocation = async () => {
+      try {
+        setLoading(true);
+        const position = await getCurrentPosition();
+        const { latitude: lat, longitude: lon } = position.coords;
+        storeLocation({ name: "Current Location", lat, lon });
+        await fetchWeatherData(lat, lon);
+      } catch (error) {
+        console.error("Failed to get location:", error);
+        // If location access fails, use stored location or default
+        const { lat, lon } = getLocation();
+        await fetchWeatherData(lat, lon);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initLocation();
   }, []);
 
   const handleRefresh = () => {
-    const { lat, lng } = getLocation();
-    fetchWeatherData(lat, lng);
+    const { lat, lon } = getLocation();
+    fetchWeatherData(lat, lon);
   };
 
   const handleLocationChange = async () => {
@@ -53,17 +87,17 @@ export function Weather() {
     try {
       setLoading(true);
       const res = await getLocationData(location);
-      const data = get(res, "results[0]");
+      const data = res[0];
       if (data) {
-        const { lat, lng } = data.geometry;
-        await fetchWeatherData(lat, lng);
-        storeLocation({ name: location, lat, lng });
-      } else {
-        // 添加错误提示
+        const { lat, lon } = data;
+        await fetchWeatherData(lat, lon);
+        storeLocation({ name: location, lat, lon });
       }
     } catch (err) {
       console.error(err);
       // 添加错误提示
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,8 +118,8 @@ export function Weather() {
             onChange={(e) => setLocation(e.target.value)}
             onBlur={handleLocationChange}
           />
-          <span
-            className={`shuaxin cursor-pointer text-gray-600 hover:text-blue-main text-lg ${
+          <IconRefresh
+            className={`cursor-pointer text-gray-600 hover:text-blue-main text-lg ${
               loading ? "animate-spin" : ""
             }`}
             onClick={handleRefresh}
@@ -108,14 +142,14 @@ export function Weather() {
               alt="weather"
             />
             <div className="text-sm text-gray-500 px-2">
-              {get(currentWeather, "weather[0].description", "未知")}
+              {get(currentWeather, "weather[0].description", "Unknown")}
             </div>
           </div>
 
           <div>
             <div className="flex items-start h-16">
               <span className="font-bold text-5xl" style={{ color: "#309FFB" }}>
-                {temp(currentWeather.temp)}
+                {temp(currentWeather?.main?.temp)}
               </span>
               <img
                 className="w-6 h-6 inline-block"
@@ -124,11 +158,11 @@ export function Weather() {
               />
             </div>
             <div className="text-sm text-gray-500 pl-1">
-              体感温度：{temp(currentWeather.feels_like)}
+              Feels like: {temp(currentWeather?.main?.feels_like)}
               <img
                 className="w-2 h-2 inline-block align-top"
                 src={weatherIcon.Celcius}
-                alt="celcius"
+                alt="celsius"
               />
             </div>
           </div>
@@ -138,31 +172,31 @@ export function Weather() {
           <div className="flex justify-between pt-4 pb-2 sm:text-xs text-base text-gray-500">
             <WeatherInfo
               icon={weatherIcon.Humidity}
-              value={`${currentWeather.humidity ?? 0}%`}
-              label="湿度"
+              value={`${currentWeather?.main?.humidity ?? 0}%`}
+              label="Humidity"
             />
-            <WeatherInfo
+            {/* <WeatherInfo
               icon={weatherIcon.uvi}
-              value={currentWeather.uvi ?? "0"}
-              label="紫外线"
-            />
+              value={currentWeather?.main?.uvi ?? "0"}
+              label="UV Index"
+            /> */}
             <WeatherInfo
               icon={weatherIcon.SunRise}
               value={
-                currentWeather.sunrise
-                  ? moment.unix(currentWeather.sunrise).format("HH:MM")
+                currentWeather?.sys?.sunrise
+                  ? moment.unix(currentWeather?.sys?.sunrise).format("HH:MM")
                   : "??:??"
               }
-              label="日出"
+              label="Sunrise"
             />
             <WeatherInfo
               icon={weatherIcon.Sunset}
               value={
-                currentWeather.sunset
-                  ? moment.unix(currentWeather.sunset).format("HH:MM")
+                currentWeather?.sys?.sunset
+                  ? moment.unix(currentWeather?.sys?.sunset).format("HH:MM")
                   : "??:??"
               }
-              label="日落"
+              label="Sunset"
             />
           </div>
         ) : null}

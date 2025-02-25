@@ -40,10 +40,10 @@ export async function getWeatherData(
   }
 }
 
-export async function getLocationData(name: string): Promise<LocationResponse> {
+export async function getLocationData(name: string): Promise<Location[]> {
   const url = `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURI(
     name
-  )}&key=${GEOCODE_API_KEY}&pretty=1`;
+  )}&appid=${GEOCODE_API_KEY}&limit=1`;
 
   try {
     const response = await fetchWithTimeout(url);
@@ -57,18 +57,18 @@ export async function getLocationData(name: string): Promise<LocationResponse> {
   }
 }
 
-export function storeLocation({ name, lat, lng }: Location): void {
+export function storeLocation({ name, lat, lon }: Location): void {
   localStorage.setItem("location", name || "location");
   localStorage.setItem("lat", lat.toString());
-  localStorage.setItem("lng", lng.toString());
+  localStorage.setItem("lon", lon.toString());
 }
 
 export function getLocation(): Location {
-  const lat = Number(localStorage.getItem("lat")) || 0;
-  const lng = Number(localStorage.getItem("lng")) || 0;
-  const name = localStorage.getItem("location") || "自动定位";
+  const lat = Number(localStorage.getItem("lat")) || 39.9042; // 默认北京位置
+  const lon = Number(localStorage.getItem("lon")) || 116.4074;
+  const name = localStorage.getItem("location") || "北京";
 
-  return { name, lat, lng };
+  return { name, lat, lon };
 }
 
 // 导入图标资源
@@ -88,7 +88,7 @@ import Sun from "../../assets/weather/Sun.svg";
 import SunRise from "../../assets/weather/Sunrise.svg";
 import Sunset from "../../assets/weather/Sunset.svg";
 import Uvi from "../../assets/weather/uvi.svg";
-import { LocationResponse, WeatherData, Location } from "./types";
+import { WeatherData, Location } from "./types";
 
 export const weatherIcon = {
   "01d": Sun,
