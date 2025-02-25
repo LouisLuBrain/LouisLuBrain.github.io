@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconMenu2 } from "@tabler/icons-react";
 
 export function SideNavBar() {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -65,7 +65,7 @@ export function SideNavBar() {
           isExpanded ? "left-64" : "left-0"
         }`}
       >
-        <IconChevronLeft
+        <IconMenu2
           className={`transform transition-transform duration-300 ${
             isExpanded ? "" : "rotate-180"
           }`}
