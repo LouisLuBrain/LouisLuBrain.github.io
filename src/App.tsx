@@ -2,7 +2,7 @@ import { Router } from "./Router";
 
 function App() {
   return (
-    <div className="w-full h-full min-h-screen bg-gray-200 p-4">
+    <div className="flex w-screen h-screen">
       <Router />
     </div>
   );
