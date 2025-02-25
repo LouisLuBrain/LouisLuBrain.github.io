@@ -22,7 +22,7 @@ export function DailyPage() {
   }, [selectedDay]);
 
   return (
-    <div className="flex justify-center bg-slate-200 h-full">
+    <div className="flex justify-center h-full">
       <div className="flex gap-2 p-4 w-full flex-wrap">
         <Calendar onSelect={handleSelect} />
         <div className="flex-1 min-w-40 flex">

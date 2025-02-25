@@ -89,9 +89,9 @@ export function Weekly() {
           <div>
             <div
               className={classNames(
-                "col-span-1 p-2 h-16 bg-slate-200 hover:bg-stone-700 hover:text-white rounded-md duration-200 cursor-pointer border-2 border-slate-200 hover:border-stone-700",
+                "col-span-1 p-2 h-16 bg-slate-200 hover:bg-gray-800 hover:text-white rounded-md duration-200 cursor-pointer border-2 border-slate-200 hover:border-stone-700",
                 index === currentDay &&
-                  "!bg-stone-700 hover:bg-stone-700 text-white !border-stone-700"
+                  "!bg-gray-800 hover:bg-gray-800 text-white !border-stone-700"
               )}
             >
               <div className="w-full flex flex-col items-center justify-end h-full">

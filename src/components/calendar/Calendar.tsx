@@ -49,8 +49,8 @@ export function Calendar<T>(props: Props<T>) {
   };
 
   return (
-    <div className="flex flex-col items-center rounded-lg overflow-hidden bg-slate-50 shadow-sm">
-      <div className="flex items-center text-sm justify-between gap-x-4 p-2 px-4 bg-stone-700 w-full text-white">
+    <div className="flex flex-col items-center rounded-lg overflow-hidden bg-slate-50 shadow-md border-2">
+      <div className="flex items-center text-sm justify-between gap-x-4 p-2 px-4 bg-gray-800 w-full text-white">
         {/* <div className="flex items-center gap-x-2">
           <button
             className="rounded-full bg-slate-100 text-stone-700 items-center p-[3px]"
@@ -73,7 +73,7 @@ export function Calendar<T>(props: Props<T>) {
                 if (month === 0) setYear((prev) => --prev);
                 setMonth((prev) => (--prev < 0 ? 11 : prev % 12));
               }}
-              className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
+              className="rounded-full bg-gray-800 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
             >
               <IconChevronLeft size={24} />
             </button>
@@ -86,14 +86,14 @@ export function Calendar<T>(props: Props<T>) {
                 if (month === 11) setYear((prev) => ++prev);
                 setMonth((prev) => ++prev % 12);
               }}
-              className="rounded-full bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
+              className="rounded-full bg-gray-800 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center p-[3px]"
             >
               <IconChevronRight size={24} />
             </button>
           </div>
           <button
             onClick={handleBackToToday}
-            className="rounded-full px-4 py-1 bg-stone-700 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center"
+            className="rounded-full px-4 py-1 bg-gray-800 text-slate-100 duration-200 ease-in-out hover:bg-slate-100 hover:text-stone-700 items-center"
           >
             Today
           </button>

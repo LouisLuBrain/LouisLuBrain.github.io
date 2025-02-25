@@ -55,7 +55,7 @@ export function IssueList({ loading, issues }: Props) {
   };
 
   return (
-    <div className="rounded-lg w-full h-full bg-slate-50 shadow-sm border-2 p-4 space-y-4 flex flex-col">
+    <div className="rounded-lg w-full h-full bg-slate-50 shadow-md border-2 p-4 space-y-4 flex flex-col">
       <div className="text-xl font-semibold text-black">Issues:</div>
 
       <div className="w-full flex-1">

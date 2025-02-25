@@ -22,15 +22,15 @@ export function CalendarCell<T>(props: Props<T>) {
       return classNames(
         baseStyle,
         notCurrentMonth,
-        isCurrentDay ? "bg-rose-600 text-white" : "group-hover:bg-rose-100",
+        isCurrentDay ? "!bg-rose-600 text-white" : "group-hover:bg-rose-100",
         props.selected ? "!border-rose-600 text-rose-600" : "text-rose-600"
       );
     } else {
       return classNames(
         baseStyle,
         notCurrentMonth,
-        isCurrentDay ? "bg-stone-700 text-white" : "group-hover:bg-stone-200",
-        props.selected ? "!border-stone-700 text-gray-700" : "text-gray-700"
+        isCurrentDay ? "!bg-gray-800 text-white" : "group-hover:bg-gray-200",
+        props.selected ? "!border-gray-700 text-gray-700" : "text-gray-700"
       );
     }
   }, [
@@ -42,7 +42,7 @@ export function CalendarCell<T>(props: Props<T>) {
   ]);
   return (
     <div
-      className="cols-span-1 group size-40 flex flex-col cursor-pointer hover:shadow-lg duration-200 text-sm font-medium border border-gray-200"
+      className="cols-span-1 group size-32 flex flex-col cursor-pointer hover:shadow-lg duration-200 text-sm font-medium border"
       key={props.value.moment.format("lll")}
       onClick={() => props.onClick && props.onClick(props.value)}
     >
