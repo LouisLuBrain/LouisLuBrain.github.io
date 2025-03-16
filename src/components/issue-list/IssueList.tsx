@@ -15,16 +15,19 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useState } from "react";
 import { IssueInput } from "./IssueInput";
+import { useIssueStore } from "../../store/issues";
+import { useCallback, useEffect, useMemo } from "react";
+import moment from "moment";
 
 interface Props {
   loading?: boolean;
-  issues?: Item[];
+  date?: string;
 }
 
-export function IssueList({ loading, issues }: Props) {
-  const [items, setItems] = useState(issues || []);
+export function IssueList({ loading, date }: Props) {
+  const state = useIssueStore.getState();
+  const baseItems = useIssueStore((state) => state.items);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -33,26 +36,50 @@ export function IssueList({ loading, issues }: Props) {
       },
     })
   );
+  // FIXME: This is a bug, the items should be reactive
+  const items = useMemo(() => {
+    if (date === undefined) return [];
+    return baseItems.filter((item) => {
+      const itemDate = moment(item.date).format("YYYY-MM-DD");
+      return itemDate === date;
+    });
+  }, [date, baseItems]);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  useEffect(() => {
+    console.log("=> ~ useEffect ~ state.items:", state.items);
+  }, [state.items]);
 
-    if (over && active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.uuid === active.id);
-        const newIndex = items.findIndex((item) => item.uuid === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  };
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-  const handleCreateIssue = (issue: Item) => {
-    setItems((prevItems) => [...prevItems, issue]);
-  };
+      if (over && active.id !== over.id) {
+        state.setItems((items) => {
+          const oldIndex = items.findIndex((item) => item.uuid === active.id);
+          const newIndex = items.findIndex((item) => item.uuid === over.id);
+          return arrayMove(items, oldIndex, newIndex);
+        });
+      }
+    },
+    [state]
+  );
 
-  const handleDeleteIssue = (uuid: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.uuid !== uuid));
-  };
+  const handleCreateIssue = useCallback(
+    (issue: Item) => {
+      console.log("=> ~ IssueList ~ issue:", issue);
+      console.log("date: ", date);
+      state.addItem({ ...issue, date: moment(date) });
+    },
+    [date, state]
+  );
+
+  const handleDeleteIssue = useCallback(
+    (uuid: string) => {
+      console.log("=> ~ IssueList ~ uuid:", uuid);
+      state.deleteItem(uuid);
+    },
+    [state]
+  );
 
   return (
     <div className="rounded-lg w-full h-full bg-slate-50 shadow-md border-2 p-4 space-y-4 flex flex-col">
@@ -90,6 +117,7 @@ export function IssueList({ loading, issues }: Props) {
     </div>
   );
 }
+
 function SortableItem({
   issue,
   onDelete,
