@@ -1,7 +1,7 @@
-const WEATHER_API_KEY =
-  import.meta.env.VITE_WEATHER_API_KEY || "5bb78a279194bfba9581c079c91d4793";
-const GEOCODE_API_KEY =
-  import.meta.env.VITE_GEOCODE_API_KEY || "6a2e2f5f670c46acab14925be9933712";
+import { WeatherData, Location } from "./types";
+
+const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API_KEY;
 const TIMEOUT = 10000;
 
 // 通用请求处理函数
@@ -23,11 +23,12 @@ async function fetchWithTimeout(
 
 export async function getWeatherData(
   latitude: number,
-  longitude: number,
-  exPart: string = ""
-): Promise<WeatherData> {
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&exclude=${exPart}&appid=${WEATHER_API_KEY}&lang=zh_cn&units=metric`;
-
+  longitude: number
+): Promise<{
+  count: number;
+  data: WeatherData[];
+}> {
+  const url = `https://api.weatherbit.io/v2.0/current?lat=${latitude}&lon=${longitude}&key=${WEATHER_API_KEY}&lang=zh`;
   try {
     const response = await fetchWithTimeout(url);
     if (!response.ok) {
@@ -70,48 +71,3 @@ export function getLocation(): Location {
 
   return { name, lat, lon };
 }
-
-// 导入图标资源
-import Celcius from "../../assets/weather/Celcius.svg";
-import Cloud from "../../assets/weather/Cloud.svg";
-import Cloudy from "../../assets/weather/Cloudy.svg";
-import CloudyMoon from "../../assets/weather/Cloudy-Moon.svg";
-import CloudySun from "../../assets/weather/Cloudy-Sun.svg";
-import Foggy from "../../assets/weather/foggy.png";
-import HeavyRain from "../../assets/weather/Heavy Rain.svg";
-import Humidity from "../../assets/weather/Humidity.svg";
-import Moon from "../../assets/weather/Moon.svg";
-import Rain from "../../assets/weather/Rain.svg";
-import ShowerRain from "../../assets/weather/ShowerRain.svg";
-import Snow from "../../assets/weather/Snow.svg";
-import Sun from "../../assets/weather/Sun.svg";
-import SunRise from "../../assets/weather/Sunrise.svg";
-import Sunset from "../../assets/weather/Sunset.svg";
-import Uvi from "../../assets/weather/uvi.svg";
-import { WeatherData, Location } from "./types";
-
-export const weatherIcon = {
-  "01d": Sun,
-  "01n": Moon,
-  "02d": CloudySun,
-  "02n": CloudyMoon,
-  "03d": Cloud,
-  "03n": Cloud,
-  "04d": Cloudy,
-  "04n": Cloudy,
-  "09d": ShowerRain,
-  "09n": ShowerRain,
-  "10d": Rain,
-  "10n": Rain,
-  "11d": HeavyRain,
-  "11n": HeavyRain,
-  "13d": Snow,
-  "13n": Snow,
-  "50d": Foggy,
-  "50n": Foggy,
-  Celcius: Celcius,
-  Humidity: Humidity,
-  SunRise: SunRise,
-  Sunset: Sunset,
-  uvi: Uvi,
-} as const;

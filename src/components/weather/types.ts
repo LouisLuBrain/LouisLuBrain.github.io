@@ -1,46 +1,47 @@
 export interface WeatherData {
-  coord?: {
-    lon?: number;
-    lat?: number;
+  app_temp: number;
+  aqi: number;
+  city_name: string;
+  clouds: number;
+  country_code: string;
+  datetime: string;
+  dewpt: number;
+  dhi: number;
+  dni: number;
+  elev_angle: number;
+  ghi: number;
+  gust: number;
+  h_angle: number;
+  lat: number;
+  lon: number;
+  ob_time: string;
+  pod: string;
+  precip: number;
+  pres: number;
+  rh: number;
+  slp: number;
+  snow: number;
+  solar_rad: number;
+  sources: string[];
+  state_code: string;
+  station: string;
+  sunrise: string;
+  sunset: string;
+  temp: number;
+  timezone: string;
+  ts: number;
+  uv: number;
+  vis: number;
+  weather: {
+    description: string;
+    code: number;
+    icon: string;
   };
-  weather?: Array<{
-    id?: number;
-    main?: string;
-    description?: string;
-    icon?: string;
-  }>;
-  base?: string;
-  main?: {
-    temp?: number;
-    feels_like?: number;
-    temp_min?: number;
-    temp_max?: number;
-    pressure?: number;
-    humidity?: number;
-    sea_level?: number;
-    grnd_level?: number;
-  };
-  visibility?: number;
-  wind?: {
-    speed?: number;
-    deg?: number;
-    gust?: number;
-  };
-  clouds?: {
-    all?: number;
-  };
-  dt?: number;
-  sys?: {
-    sunrise?: number;
-    sunset?: number;
-  };
-  timezone?: number;
-  id?: number;
-  name?: string;
-  cod?: number;
+  wind_cdir: string;
+  wind_cdir_full: string;
+  wind_dir: number;
+  wind_spd: number;
 }
-
-// ...existing code...
 
 export interface DailyWeather {
   dt?: number;
