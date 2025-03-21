@@ -116,6 +116,7 @@ export function Calendar<T>(props: Props<T>) {
         {days.map((val) => (
           <CalendarCell<T>
             value={val}
+            key={val.moment.format("YYYY-MM-DD")}
             currentDay={currentDay.set({ date: 17 })}
             selected={selectedDay?.isSame(val.moment, "day")}
             onClick={handleSelect}
